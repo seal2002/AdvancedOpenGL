@@ -4,84 +4,84 @@
 
 namespace OpenGLWindow
 {
-	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-	bool keys[GLFW_KEY_LAST];
-	Window::Window(int width, int height, const std::string& title)
-	{
-		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		wnd = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(wnd);
+    void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+    bool keys[GLFW_KEY_LAST];
+    Window::Window(int width, int height, const std::string& title)
+    {
+        glfwInit();
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        wnd = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+        glfwMakeContextCurrent(wnd);
 
-		if (wnd == NULL)
-		{
-			std::cout << "Failed to create GLFW window" << std::endl;
-			glfwTerminate();
-		}
+        if (wnd == NULL)
+        {
+            std::cout << "Failed to create GLFW window" << std::endl;
+            glfwTerminate();
+        }
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			std::cout << "Failed to initilize GLAD" << std::endl;
-		}
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        {
+            std::cout << "Failed to initilize GLAD" << std::endl;
+        }
 
-		glfwSetFramebufferSizeCallback(wnd, framebuffer_size_callback);
-		glfwSetKeyCallback(wnd, key_callback);
-	}
-	
-	Window::~Window()
-	{
-		glfwDestroyWindow(wnd);
-		glfwTerminate();
-	}
+        glfwSetFramebufferSizeCallback(wnd, framebuffer_size_callback);
+        glfwSetKeyCallback(wnd, key_callback);
+    }
 
-	bool Window::shouldClose() const noexcept
-	{
-		return glfwWindowShouldClose(wnd) != 0;
-	}
+    Window::~Window()
+    {
+        glfwDestroyWindow(wnd);
+        glfwTerminate();
+    }
 
-	void Window::pollEvents() const noexcept
-	{
-		glfwPollEvents();
-	}
+    bool Window::shouldClose() const noexcept
+    {
+        return glfwWindowShouldClose(wnd) != 0;
+    }
 
-	void Window::swapBuffers() const noexcept
-	{
-		glfwSwapBuffers(wnd);
-	}
+    void Window::pollEvents() const noexcept
+    {
+        glfwPollEvents();
+    }
 
-	void Window::processInput() const noexcept
-	{
-		if (glfwGetKey(wnd, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(wnd, true);
-	}
+    void Window::swapBuffers() const noexcept
+    {
+        glfwSwapBuffers(wnd);
+    }
 
-	std::pair<int, int> Window::getWindowSize() const noexcept
-	{
-		std::pair<int, int> sz{};
-		glfwGetWindowSize(wnd, &sz.first, &sz.second);
-		return sz;
-	}
+    void Window::processInput() const noexcept
+    {
+        if (glfwGetKey(wnd, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(wnd, true);
+    }
 
-	bool* Window::getKeyPress() const noexcept
-	{
-		return keys;
-	}
+    std::pair<int, int> Window::getWindowSize() const noexcept
+    {
+        std::pair<int, int> sz{};
+        glfwGetWindowSize(wnd, &sz.first, &sz.second);
+        return sz;
+    }
 
-	void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-	{
-		glViewport(0, 0, width, height);
-	}
+    bool* Window::getKeyPress() const noexcept
+    {
+        return keys;
+    }
 
-	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-	{
-		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-			glfwSetWindowShouldClose(window, GL_TRUE);
-		if (action == GLFW_PRESS)
-			keys[key] = true;
-		if (action == GLFW_RELEASE)
-			keys[key] = false;
-	}
+    void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+    {
+        glViewport(0, 0, width, height);
+    }
+
+    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+    {
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, GL_TRUE);
+        if (action == GLFW_PRESS)
+            keys[key] = true;
+        if (action == GLFW_RELEASE)
+            keys[key] = false;
+    }
 }

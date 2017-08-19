@@ -3,9 +3,11 @@
 #include <glm\common.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <GLFW\include\GLFW\glfw3.h>
-#include <stb_image.h>
+#include <glad\glad.h>
+
 #include "common\Shader.h"
 #include "common\Camera.h"
+#include "common\LoadTexture.h"
 
 
 using namespace OpenGLWindow;
@@ -65,34 +67,61 @@ float cubeVertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
+float groundVertices[] = {
+        // positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
+         5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+        -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
+        -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+
+         5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+        -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+         5.0f, -0.5f, -5.0f,  2.0f, 2.0f
+};
+
 int main()
 {
     Window window(SCR_W, SCR_H, "Depth Test !!!");
 
     glEnable(GL_DEPTH_TEST);
+    //glDepthFunc(GL_ALWAYS);
 
     Shader ourShader("..\\Resources\\DepthTest.vs","..\\Resources\\DepthTest.fs");
-    
+
     // Init VAO, VBO for Cube
     unsigned int cubeVAO, cubeVBO;
-	glGenBuffers(1, &cubeVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
-	glGenVertexArrays(1, &cubeVAO);
-	glBindVertexArray(cubeVAO);
+    glGenBuffers(1, &cubeVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+    glGenVertexArrays(1, &cubeVAO);
+    glBindVertexArray(cubeVAO);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)0);
     glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)(3 * sizeof(GL_FLOAT)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)(3 * sizeof(GL_FLOAT)));
     glBindVertexArray(0);
-    
+
+    // Init VAO, VBO for Ground
+    unsigned int groundVAO, groundVBO;
+    glGenBuffers(1, &groundVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, groundVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(groundVertices), &groundVertices, GL_STATIC_DRAW);
+    glGenVertexArrays(1, &groundVAO);
+    glBindVertexArray(groundVAO);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)(3 * sizeof(GL_FLOAT)));
+    glBindVertexArray(0);
+
     // load textures
     // -------------
     unsigned int cubeTexture  = loadTexture("..\\Resources\\marble.jpg");
+    unsigned int groundTexture = loadTexture("..\\Resources\\metal.png");
 
     // shader configuration
-	ourShader.Use();
-	ourShader.setInt("ourTexture", 0);
+    ourShader.Use();
+    ourShader.setInt("ourTexture", 0);
+
     while(!window.shouldClose())
     {
         keys = window.getKeyPress();
@@ -101,26 +130,40 @@ int main()
         // -----
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-		ourShader.Use();
+
+        ourShader.Use();
         glm::mat4 model;
-		glm::mat4 view = camera.GetViewMatrix();
+        glm::mat4 view = camera.GetViewMatrix();
         glm::mat4 projection = glm::perspective(45.0f, (float)(SCR_W/SCR_H), 0.1f, 100.0f);;
 
-		ourShader.setMat4("view", view);
-		ourShader.setMat4("projection", projection);
+        ourShader.setMat4("view", view);
+        ourShader.setMat4("projection", projection);
 
         // cubes
         glBindVertexArray(cubeVAO);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, cubeTexture);
         model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-		ourShader.setMat4("model", model);
+        ourShader.setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+        ourShader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
+        // ground
+        glBindVertexArray(groundVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, groundTexture);
+        ourShader.setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
         window.swapBuffers();
         window.pollEvents();
     }
+    glDeleteVertexArrays(1, &cubeVAO);
+    glDeleteVertexArrays(1, &groundVAO);
+    glDeleteBuffers(1, &cubeVBO);
+    glDeleteBuffers(1, &groundVBO);
+
 }
 
 void do_movement()
@@ -157,43 +200,4 @@ void do_movement()
     {
         camera.ProcessKeyboard(Camera_Movement::ROTATE_DOWN);
     }
-}
-
-// utility function for loading a 2D texture from file
-// ---------------------------------------------------
-unsigned int loadTexture(char const *path)
-{
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-
-    int width, height, nrComponents;
-    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
-    if (data)
-    {
-        GLenum format;
-        if (nrComponents == 1)
-            format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
-
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        stbi_image_free(data);
-    }
-    else
-    {
-        std::cout << "Texture failed to load at path: " << path << std::endl;
-        stbi_image_free(data);
-    }
-
-    return textureID;
 }

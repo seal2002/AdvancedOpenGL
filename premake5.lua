@@ -114,6 +114,11 @@ end
 -- The windowed app
 project "1.DepthTest"
     kind "ConsoleApp"
+
+    filter { "system:Windows" }
+    files "Libraries/common/*.h"
+
+    filter { "system:Windows" }
     files "Projects/1.DepthTest/**"
 
     -- We also need the headers
