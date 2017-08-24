@@ -8,6 +8,8 @@
 #include "common\Shader.h"
 #include "common\LoadTexture.h"
 
+#define PATH "..\\Projects\\3.1.BlendingDiscard"
+
 using namespace OpenGLWindow;
 
 static float SCR_W = 800.0f;
@@ -46,8 +48,9 @@ int main()
     Window window(SCR_W, SCR_H, "This is Blending Demo");
 
     glEnable(GL_DEPTH_TEST);
-
-    Shader ourShader("..\\Resources\\Blending.vs", "..\\Resources\\Blending.fs");
+    char* path = new char[50];
+    sprintf(path, "%s\\%s", PATH, "Blending");
+    Shader ourShader(path);
 
     // Init VAO, VBO for Grass
     unsigned int grassVAO, grassVBO;
