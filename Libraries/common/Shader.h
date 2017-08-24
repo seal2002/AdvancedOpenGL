@@ -18,13 +18,16 @@ class Shader
 public:
     GLuint Program;
 
-    Shader(const GLchar* vertexPath, const GLchar* fragmentPath)
+    Shader(const GLchar* Path)
     {
         string vertexCode;
         string fragmentCode;
         ifstream vShaderFile;
         ifstream fShaderFile;
-
+        GLchar * vertexPath = new char[50];
+        GLchar * fragmentPath = new char[50];
+        sprintf(vertexPath, "%s.vs", Path);
+        sprintf(fragmentPath, "%s.fs", Path);
         vShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
         fShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
         try
@@ -94,6 +97,8 @@ public:
 
         glDeleteShader(vertex);
         glDeleteShader(fragment);
+        delete []fragmentPath;
+        delete []vertexPath;
     }
 
     void Use()

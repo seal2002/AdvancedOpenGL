@@ -9,6 +9,7 @@
 #include "common\Camera.h"
 #include "common\LoadTexture.h"
 
+#define PATH "..\\Projects\\1.DepthTest"
 
 using namespace OpenGLWindow;
 
@@ -84,8 +85,10 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
     //glDepthFunc(GL_ALWAYS);
-
-    Shader ourShader("..\\Resources\\DepthTest.vs","..\\Resources\\DepthTest.fs");
+    char* path = new char[50];
+    sprintf(path,"%s\\%s",PATH,"DepthTest");
+    Shader ourShader(path);
+    delete []path;
 
     // Init VAO, VBO for Cube
     unsigned int cubeVAO, cubeVBO;

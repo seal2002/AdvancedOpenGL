@@ -159,14 +159,14 @@ project "1.DepthTest"
         links { "GL" }
 
 -- The windowed app
-project "3.Blending"
+project "3.1.BlendingDiscard"
     kind "ConsoleApp"
 
     filter { "system:Windows" }
     files "Libraries/common/*.h"
 
     filter { "system:Windows" }
-    files "Projects/3.Blending/**"
+    files "Projects/3.1.BlendingDiscard/**"
 
     -- We also need the headers
     includedirs "Projects/MainWindowLib"
@@ -181,3 +181,28 @@ project "3.Blending"
 
     filter { "system:not windows" }
         links { "GL" }
+
+-- The windowed app
+project "3.2.BlendingSort"
+    kind "ConsoleApp"
+
+    filter { "system:Windows" }
+    files "Libraries/common/*.h"
+
+    filter { "system:Windows" }
+    files "Projects/3.2.BlendingSort/**"
+
+    -- We also need the headers
+    includedirs "Projects/MainWindowLib"
+    includedirs "Libraries"
+
+    useOpenGLWindowLib()
+    links "STB_IMAGE"
+    -- Now we need to add the OpenGL system libraries
+
+    filter { "system:windows" }
+        links { "OpenGL32" }
+
+    filter { "system:not windows" }
+        links { "GL" }
+        
