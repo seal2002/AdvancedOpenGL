@@ -134,15 +134,16 @@ project "1.DepthTest"
 
     filter { "system:not windows" }
         links { "GL" }
-        -- The windowed app
-project "1.DepthTest"
+
+-- The windowed app
+project "2.StencilTest"
     kind "ConsoleApp"
 
     filter { "system:Windows" }
     files "Libraries/common/*.h"
 
     filter { "system:Windows" }
-    files "Projects/1.DepthTest/**"
+    files "Projects/2.StencilTest/**"
 
     -- We also need the headers
     includedirs "Projects/MainWindowLib"
