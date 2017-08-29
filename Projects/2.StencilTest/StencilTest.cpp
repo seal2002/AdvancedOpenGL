@@ -146,6 +146,8 @@ int main()
         glm::mat4 model;
         glm::mat4 view = camera.GetViewMatrix();
         glm::mat4 projection = glm::perspective(45.0f, (float)(SCR_W/SCR_H), 0.1f, 100.0f);;
+        SingleColorShader.setMat4("view", view);
+        SingleColorShader.setMat4("projection", projection);
 
 		ourShader.Use();
         ourShader.setMat4("view", view);
@@ -167,9 +169,11 @@ int main()
         glBindVertexArray(cubeVAO);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, cubeTexture);
+        model = glm::mat4();
         model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
         ourShader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+        model = glm::mat4();
         model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
         ourShader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -187,12 +191,14 @@ int main()
 		
 		float scale = 1.1;
 		glBindVertexArray(cubeVAO);
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, cubeTexture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, cubeTexture);
+        model = glm::mat4();
 		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
 		model = glm::scale(model, glm::vec3(scale));
 		SingleColorShader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+        model = glm::mat4();
 		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(scale));
 		SingleColorShader.setMat4("model", model);
