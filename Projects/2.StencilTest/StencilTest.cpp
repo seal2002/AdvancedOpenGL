@@ -83,13 +83,13 @@ int main()
 {
     Window window(SCR_W, SCR_H, "Stencil Test !!!");
 
-	// configuration global openGL state
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	
+    // configuration global openGL state
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
 
     char* path = new char[50];
     sprintf(path,"%s\\%s",PATH,"StencilTest");
@@ -132,7 +132,7 @@ int main()
     // shader configuration
     ourShader.Use();
     ourShader.setInt("ourTexture", 0);
-        
+
 
     while(!window.shouldClose())
     {
@@ -140,19 +140,19 @@ int main()
         do_movement();
         // render
         // -----
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
         glm::mat4 model;
         glm::mat4 view = camera.GetViewMatrix();
         glm::mat4 projection = glm::perspective(45.0f, (float)(SCR_W/SCR_H), 0.1f, 100.0f);;
         SingleColorShader.setMat4("view", view);
         SingleColorShader.setMat4("projection", projection);
 
-		ourShader.Use();
+        ourShader.Use();
         ourShader.setMat4("view", view);
         ourShader.setMat4("projection", projection);
-		glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
+        glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
         // ground
         glBindVertexArray(groundVAO);
         glActiveTexture(GL_TEXTURE0);
@@ -160,10 +160,10 @@ int main()
         ourShader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		// 1st. render pass, draw objects as normal, writing to the stencil buffer
-		// --------------------------------------------------------------------
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilMask(0xFF);
+        // 1st. render pass, draw objects as normal, writing to the stencil buffer
+        // --------------------------------------------------------------------
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        glStencilMask(0xFF);
 
         // Draw 2 cubes
         glBindVertexArray(cubeVAO);
@@ -178,35 +178,35 @@ int main()
         ourShader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		// 2nd. render pass: now draw slightly scaled versions of the objects, this time disabling stencil writing.
-		// Because the stencil buffer is now filled with several 1s. The parts of the buffer that are 1 are not drawn, thus only drawing 
-		// the objects' size differences, making it look like borders.
-		// -----------------------------------------------------------------------------------------------------------------------------
-		// Draw 2 cubes with scale
-		
-		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDisable(GL_DEPTH_TEST);
-		SingleColorShader.Use();
-		
-		float scale = 1.1;
-		glBindVertexArray(cubeVAO);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, cubeTexture);
-        model = glm::mat4();
-		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-		model = glm::scale(model, glm::vec3(scale));
-		SingleColorShader.setMat4("model", model);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-        model = glm::mat4();
-		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(scale));
-		SingleColorShader.setMat4("model", model);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
+        // 2nd. render pass: now draw slightly scaled versions of the objects, this time disabling stencil writing.
+        // Because the stencil buffer is now filled with several 1s. The parts of the buffer that are 1 are not drawn, thus only drawing
+        // the objects' size differences, making it look like borders.
+        // -----------------------------------------------------------------------------------------------------------------------------
+        // Draw 2 cubes with scale
 
-		glStencilMask(0xFF);
-		glEnable(GL_DEPTH_TEST);
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        glStencilMask(0x00);
+        glDisable(GL_DEPTH_TEST);
+        SingleColorShader.Use();
+
+        float scale = 1.1;
+        glBindVertexArray(cubeVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, cubeTexture);
+        model = glm::mat4();
+        model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
+        model = glm::scale(model, glm::vec3(scale));
+        SingleColorShader.setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        model = glm::mat4();
+        model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(scale));
+        SingleColorShader.setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+
+        glStencilMask(0xFF);
+        glEnable(GL_DEPTH_TEST);
 
         window.swapBuffers();
         window.pollEvents();
