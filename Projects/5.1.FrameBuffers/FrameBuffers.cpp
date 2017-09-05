@@ -17,6 +17,7 @@ static float SCR_W = 800.0f;
 static float SCR_H = 600.0f;
 
 void do_movement();
+void changeEffect();
 Camera camera(glm::vec3(0.0f, 0.5f, 3.0f));
 bool* keys;
 
@@ -91,16 +92,26 @@ float groundVertices[] = {
 
 };
 
+enum EffectList {Normal, Inversion, GrayScale, Kernel, Blur, Max};
+static int effectIndex = EffectList::Blur;
+Shader *screenShader;
 int main()
 {
     Window window(SCR_W, SCR_H, "FrameBuffers Demo");
-
     char* path = new char[50];
-    sprintf(path, "%s\\%s", PATH, "FrameBufferScreen");
-    Shader screenShader(path);
     sprintf(path, "%s\\%s", PATH, "FrameBuffer");
     Shader ourShader(path);
-
+    Shader **Effect = new Shader*[EffectList::Max];
+    sprintf(path, "%s\\%s", PATH, "FrameBufferScreen");
+    Effect[EffectList::Normal] = new Shader(path);
+    sprintf(path, "%s\\%s", PATH, "Inversion");
+    Effect[EffectList::Inversion] = new Shader(path);
+    sprintf(path, "%s\\%s", PATH, "GrayScale");
+    Effect[EffectList::GrayScale] = new Shader(path);
+    sprintf(path, "%s\\%s", PATH, "Kernel");
+    Effect[EffectList::Kernel] = new Shader(path);
+    sprintf(path, "%s\\%s", PATH, "Blur");
+    Effect[EffectList::Blur] = new Shader(path);
     // Init VAO, VBO for Cube
     unsigned int cubeVAO, cubeVBO;
     glGenBuffers(1, &cubeVBO);
@@ -148,9 +159,10 @@ int main()
     // shader configuration
     ourShader.Use();
     ourShader.setInt("texture1", 0);
-    screenShader.Use();
-    ourShader.setInt("screenTexture", 0);
 
+    screenShader = Effect[EffectList::Normal];
+    screenShader->Use();
+    screenShader->setInt("screenTexture", 0);
     // --------------------------------------------------------
     // Create framebuffer
     // -------------------------
@@ -182,6 +194,7 @@ int main()
     {
         keys = window.getKeyPress();
         do_movement();
+        changeEffect();
 
         // render
         // -----
@@ -191,7 +204,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
-
+        glEnable(GL_CULL_FACE);
         // Draw Scence
         // -----------------------------------------------------------
         ourShader.Use();
@@ -228,7 +241,8 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        screenShader.Use();
+        screenShader = Effect[effectIndex];
+        screenShader->Use();
         glBindVertexArray(screenVAO);
         glDisable(GL_DEPTH_TEST);
         glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
@@ -243,8 +257,19 @@ int main()
     glDeleteBuffers(1, &cubeVBO);
     glDeleteBuffers(1, &groundVBO);
     glDeleteBuffers(1, &screenVBO);
+    delete[]Effect;
 }
 
+
+void changeEffect()
+{
+    if (keys[GLFW_KEY_C])
+    {
+        effectIndex++;
+        if(effectIndex > EffectList::Max - 1)
+            effectIndex = EffectList::Normal;
+    }
+}
 void do_movement()
 {
     if (keys[GLFW_KEY_W])
