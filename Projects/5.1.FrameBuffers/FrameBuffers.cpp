@@ -92,8 +92,8 @@ float groundVertices[] = {
 
 };
 
-enum EffectList {Normal, Inversion, GrayScale, Kernel, Blur, Max};
-static int effectIndex = EffectList::Blur;
+enum EffectList {Normal, Inversion, GrayScale, Kernel, Blur, Edge, Max};
+static int effectIndex = EffectList::Edge;
 Shader *screenShader;
 int main()
 {
@@ -112,6 +112,8 @@ int main()
     Effect[EffectList::Kernel] = new Shader(path);
     sprintf(path, "%s\\%s", PATH, "Blur");
     Effect[EffectList::Blur] = new Shader(path);
+    sprintf(path, "%s\\%s", PATH, "EdgeDetection");
+    Effect[EffectList::Edge] = new Shader(path);
     // Init VAO, VBO for Cube
     unsigned int cubeVAO, cubeVBO;
     glGenBuffers(1, &cubeVBO);
