@@ -69,7 +69,7 @@ float cubeVertices[] = {
 };
 
 float skyboxVertices[] = {
-    // positions          
+    // positions
         -1.0f,  1.0f, -1.0f,
         -1.0f, -1.0f, -1.0f,
          1.0f, -1.0f, -1.0f,
@@ -116,7 +116,7 @@ float skyboxVertices[] = {
 int main()
 {
     Window window(SCR_W, SCR_H, "SkyBox Demo");
-    
+
     glEnable(GL_DEPTH_TEST);
     // Load Shader
     char *path = new char[50];
@@ -124,7 +124,7 @@ int main()
     Shader cube(path);
     sprintf(path, "%s\\%s", PATH, "skybox");
     Shader skybox(path);
-    
+
     // Init VAO, VBO for Cube
     unsigned int cubeVAO, cubeVBO;
     glGenBuffers(1, &cubeVBO);
@@ -150,9 +150,9 @@ int main()
     glBindVertexArray(0);
     glCheckError();
     // Load Texture
-    
+
     unsigned int textureMarble = loadTexture("..\\Resources\\marble.jpg");
-    
+
     vector<string> faces = {
         "..\\Resources\\skybox\\right.jpg",
         "..\\Resources\\skybox\\left.jpg",
@@ -161,34 +161,31 @@ int main()
         "..\\Resources\\skybox\\back.jpg",
         "..\\Resources\\skybox\\front.jpg"
     };
-    
+
     unsigned int skyboxTexture = loadTextureCubeMap(faces);
-    
+
     // Configuration Shader
-    
+
     cube.Use();
     cube.setInt("texture1", 0);
-    
+
     skybox.Use();
     skybox.setInt("skybox", 0);
-    
+
     while(!window.shouldClose())
     {
         keys = window.getKeyPress();
         do_movement();
         // Render
-        
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
+
         // draw Cube
-        cube.Use();
-        
         glm::mat4 model;
         glm::mat4 view = camera.GetViewMatrix();
         glm::mat4 projection = glm::perspective(45.0f, (float)SCR_W / (float)SCR_H, 0.1f, 100.0f);
-
-        
+        cube.Use();
         cube.setMat4("model", model);
         cube.setMat4("view", view);
         cube.setMat4("projection", projection);
@@ -198,28 +195,24 @@ int main()
         glBindTexture(GL_TEXTURE_2D, textureMarble);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
-        
+
         // draw SkyBox
-        
+
         glDepthMask(GL_FALSE);
-        
         skybox.Use();
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
         skybox.setMat4("view",view);
         skybox.setMat4("projection", projection);
-        
+
         glBindVertexArray(skyboxVAO);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        
         glDepthMask(GL_TRUE);
 
         window.pollEvents();
         window.swapBuffers();
     }
-    
-
 }
 
 void do_movement()
