@@ -2,6 +2,7 @@
 #define __LOAD_TEXTURE_H__
 
 #include <stb_image.h>
+#include "CheckError.h"
 
 // utility function for loading a 2D texture from file
 // ---------------------------------------------------
@@ -62,7 +63,8 @@ unsigned int loadTextureCubeMap(vector<std::string> faces)
     unsigned int textureID;
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
+	stbi_set_flip_vertically_on_load(0);
+	// This code is correct for Cube Map load, for this, we don't need to flip Y coordinate, it cost a lot of time to determine about it
     int width, height, nrComponents;
     for (unsigned int i = 0; i < faces.size(); i++)
     {
@@ -83,7 +85,6 @@ unsigned int loadTextureCubeMap(vector<std::string> faces)
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
     return textureID;
 }
 #endif
