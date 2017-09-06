@@ -8,9 +8,11 @@
 
 #include <common/filesystem.h>
 #include <common/shader_m.h>
-#include <common/camera.h> 
+#include <common/camera_m.h> 
 
 #include <iostream>
+
+using namespace std;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
