@@ -75,8 +75,8 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader shader("6.1.cubemaps.vs", "6.1.cubemaps.fs");
-    Shader skyboxShader("6.1.skybox.vs", "6.1.skybox.fs");
+    Shader shader("..\\Projects\\6.2.Skybox\\6.1.cubemaps.vs", "..\\Projects\\6.2.Skybox\\6.1.cubemaps.fs");
+    Shader skyboxShader("..\\Projects\\6.2.Skybox\\6.1.skybox.vs", "..\\Projects\\6.2.Skybox\\6.1.skybox.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -192,16 +192,16 @@ int main()
 
     // load textures
     // -------------
-    unsigned int cubeTexture = loadTexture(FileSystem::getPath("resources/textures/marble.jpg").c_str());
+    unsigned int cubeTexture = loadTexture(FileSystem::getPath("resources/marble.jpg").c_str());
 
     vector<std::string> faces
     {
-        FileSystem::getPath("resources/textures/skybox/right.jpg"),
-        FileSystem::getPath("resources/textures/skybox/left.jpg"),
-        FileSystem::getPath("resources/textures/skybox/top.jpg"),
-        FileSystem::getPath("resources/textures/skybox/bottom.jpg"),
-        FileSystem::getPath("resources/textures/skybox/back.jpg"),
-        FileSystem::getPath("resources/textures/skybox/front.jpg")
+        FileSystem::getPath("resources/skybox/right.jpg"),
+        FileSystem::getPath("resources/skybox/left.jpg"),
+        FileSystem::getPath("resources/skybox/top.jpg"),
+        FileSystem::getPath("resources/skybox/bottom.jpg"),
+        FileSystem::getPath("resources/skybox/back.jpg"),
+        FileSystem::getPath("resources/skybox/front.jpg")
     };
     unsigned int cubemapTexture = loadCubemap(faces);
 
