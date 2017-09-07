@@ -198,7 +198,7 @@ int main()
 
         // draw SkyBox
 
-        glDepthMask(GL_FALSE);
+        glDepthFunc(GL_LEQUAL);
         skybox.Use();
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
         skybox.setMat4("view",view);
@@ -208,7 +208,7 @@ int main()
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        glDepthMask(GL_TRUE);
+        glDepthFunc(GL_LESS);
 
         window.pollEvents();
         window.swapBuffers();
