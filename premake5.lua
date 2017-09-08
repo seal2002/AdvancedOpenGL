@@ -302,3 +302,27 @@ project "6.2.SkyBox"
 
     filter { "system:not windows" }
         links { "GL" }
+
+-- The windowed app
+project "6.3.SkyBoxReflection"
+    kind "ConsoleApp"
+
+    filter { "system:Windows" }
+    files "Libraries/common/*.h"
+
+    filter { "system:Windows" }
+    files "Projects/6.3.SkyBoxReflection/**"
+
+    -- We also need the headers
+    includedirs "Projects/MainWindowLib"
+    includedirs "Libraries"
+
+    useOpenGLWindowLib()
+    links "STB_IMAGE"
+    -- Now we need to add the OpenGL system libraries
+
+    filter { "system:windows" }
+        links { "OpenGL32" }
+
+    filter { "system:not windows" }
+        links { "GL" }
