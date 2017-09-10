@@ -9,7 +9,7 @@
 #include "common\LoadTexture.h"
 #include "common\CheckError.h"
 
-#define PATH "..\\Projects\\6.3.SkyboxReflection"
+#define PATH "..\\Projects\\6.3.EnviromentMapping"
 
 using namespace OpenGLWindow;
 
@@ -118,7 +118,8 @@ int main()
     glEnable(GL_DEPTH_TEST);
     // Load Shader
     char *path = new char[50];
-    sprintf(path, "%s\\%s", PATH, "cube");
+    sprintf(path, "%s\\%s", PATH, "refractionCube");
+    //sprintf(path, "%s\\%s", PATH, "reflectionCube"); for reflection
     Shader cube(path);
     sprintf(path, "%s\\%s", PATH, "skybox");
     Shader skybox(path);
@@ -149,8 +150,6 @@ int main()
     glCheckError();
     // Load Texture
 
-    unsigned int textureMarble = loadTexture("..\\Resources\\marble.jpg");
-
     vector<string> faces = {
         "..\\Resources\\skybox\\right.jpg",
         "..\\Resources\\skybox\\left.jpg",
@@ -165,7 +164,7 @@ int main()
     // Configuration Shader
 
     cube.Use();
-    cube.setInt("texture1", 0);
+    cube.setInt("skybox", 0);
 
     skybox.Use();
     skybox.setInt("skybox", 0);
