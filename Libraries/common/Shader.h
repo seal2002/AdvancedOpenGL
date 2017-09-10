@@ -11,6 +11,8 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
+#define MAX_CHAR 60
+
 using namespace std;
 
 class Shader
@@ -24,8 +26,8 @@ public:
         string fragmentCode;
         ifstream vShaderFile;
         ifstream fShaderFile;
-        GLchar * vertexPath = new char[50];
-        GLchar * fragmentPath = new char[50];
+        GLchar * vertexPath = new char[MAX_CHAR];
+        GLchar * fragmentPath = new char[MAX_CHAR];
         sprintf(vertexPath, "%s.vs", Path);
         sprintf(fragmentPath, "%s.fs", Path);
         vShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
