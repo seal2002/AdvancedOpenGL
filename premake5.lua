@@ -304,14 +304,14 @@ project "6.2.SkyBox"
         links { "GL" }
 
 -- The windowed app
-project "6.3.SkyBoxReflection"
+project "6.3.EnviromentMapping"
     kind "ConsoleApp"
 
     filter { "system:Windows" }
     files "Libraries/common/*.h"
 
     filter { "system:Windows" }
-    files "Projects/6.3.SkyBoxReflection/**"
+    files "Projects/6.3.EnviromentMapping/**"
 
     -- We also need the headers
     includedirs "Projects/MainWindowLib"
