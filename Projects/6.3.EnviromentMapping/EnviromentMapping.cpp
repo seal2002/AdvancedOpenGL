@@ -113,7 +113,7 @@ float skyboxVertices[] = {
 
 int main()
 {
-    Window window(SCR_W, SCR_H, "SkyBox Reflection Demo");
+    Window window(SCR_W, SCR_H, "EnviromentMapping Demo");
 
     glEnable(GL_DEPTH_TEST);
     // Load Shader
