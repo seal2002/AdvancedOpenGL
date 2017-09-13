@@ -20,8 +20,6 @@ void do_movement();
 Camera camera(glm::vec3(0.0f, 0.5f, 3.0f));
 bool* keys;
 
-// setup vertex data (and buffer(s)) and configure vertex attributes
-
 float cubeVertices[] = {
     // positions
         -1.0f,  1.0f, -1.0f,
@@ -74,7 +72,7 @@ int main()
     char *path = new char[50];
     sprintf(path, "%s\\%s", PATH, "glPointSize");
     Shader shader(path);
-
+    glEnable(GL_PROGRAM_POINT_SIZE);
     // Init VAO, VBO for Cube
     unsigned int cubeVAO, cubeVBO;
     glGenBuffers(1, &cubeVBO);
@@ -82,11 +80,12 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
     glGenVertexArrays(1, &cubeVAO);
     glBindVertexArray(cubeVAO);
-    glEnableVertexAttribArray(0);
+
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)0);
+    glEnableVertexAttribArray(0);
     glBindVertexArray(0);
     glCheckError();
-    
+    shader.Use();
     while(!window.shouldClose())
     {
         keys = window.getKeyPress();
@@ -102,6 +101,7 @@ int main()
         shader.setMat4("model", model);
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
+        glBindVertexArray(cubeVAO);
         glDrawArrays(GL_POINTS, 0, 36);
         glBindVertexArray(0);
         window.pollEvents();
