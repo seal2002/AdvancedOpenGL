@@ -67,7 +67,7 @@ float cubeVertices[] = {
 
 int main()
 {
-    Window window(SCR_W, SCR_H, "Advance GLSL Demo");
+    Window window(SCR_W, SCR_H, "Advance GLSL - glPointSize Demo");
      // Load Shader
     char *path = new char[50];
     sprintf(path, "%s\\%s", PATH, "glPointSize");
@@ -83,7 +83,7 @@ int main()
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)0);
-    
+
     glBindVertexArray(0);
     glCheckError();
     shader.Use();
