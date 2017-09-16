@@ -350,3 +350,27 @@ project "8.1.AdvanceGLSL"
 
     filter { "system:not windows" }
         links { "GL" }
+        
+-- The windowed app
+project "8.2.UniformBufferExample"
+    kind "ConsoleApp"
+
+    filter { "system:Windows" }
+    files "Libraries/common/*.h"
+
+    filter { "system:Windows" }
+    files "Projects/8.2.UniformBufferExample/**"
+
+    -- We also need the headers
+    includedirs "Projects/MainWindowLib"
+    includedirs "Libraries"
+
+    useOpenGLWindowLib()
+    links "STB_IMAGE"
+    -- Now we need to add the OpenGL system libraries
+
+    filter { "system:windows" }
+        links { "OpenGL32" }
+
+    filter { "system:not windows" }
+        links { "GL" }

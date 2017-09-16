@@ -22,14 +22,24 @@ public:
 
     Shader(const GLchar* Path)
     {
-        string vertexCode;
-        string fragmentCode;
-        ifstream vShaderFile;
-        ifstream fShaderFile;
         GLchar * vertexPath = new char[MAX_CHAR];
         GLchar * fragmentPath = new char[MAX_CHAR];
         sprintf(vertexPath, "%s.vs", Path);
         sprintf(fragmentPath, "%s.fs", Path);
+        Init((const GLchar*)vertexPath, (const GLchar*)fragmentPath);
+    }
+
+	Shader(const GLchar* vertexPath, const GLchar* fragmentPath)
+	{
+		Init(vertexPath, fragmentPath);
+	}
+
+    bool Init(const GLchar* vertexPath, const GLchar* fragmentPath)
+    {
+        string vertexCode;
+        string fragmentCode;
+        ifstream vShaderFile;
+        ifstream fShaderFile;
         vShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
         fShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
         try
@@ -52,6 +62,7 @@ public:
         catch (ifstream::failure e)
         {
             cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ " << vertexPath << " " << fragmentPath << endl;
+			return false;
         }
 
         const GLchar* vShaderCode = vertexCode.c_str();
@@ -71,6 +82,7 @@ public:
         {
             glGetShaderInfoLog(vertex, 512, NULL, infoLog);
             cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << endl;
+			return false;
         }
 
         //Fragment Shader
@@ -83,6 +95,7 @@ public:
         {
             glGetShaderInfoLog(fragment, 512, NULL, infoLog);
             cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << endl;
+			return false;
         }
 
         this->Program = glCreateProgram();
@@ -95,12 +108,12 @@ public:
         {
             glGetProgramInfoLog(this->Program, 512, NULL, infoLog);
             cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << endl;
+			return false;
         }
 
         glDeleteShader(vertex);
         glDeleteShader(fragment);
-        delete []fragmentPath;
-        delete []vertexPath;
+		return true;
     }
 
     void Use()
