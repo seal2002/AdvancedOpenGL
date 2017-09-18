@@ -70,7 +70,7 @@ int main()
     Window window(SCR_W, SCR_H, "Advance GLSL - Uniform Buffer Demo");
 
     glEnable(GL_DEPTH_TEST);
-     // Load Shader
+    // Load Shader
     string pathVS(PATH);
     pathVS += "\\cube.vs";
 
