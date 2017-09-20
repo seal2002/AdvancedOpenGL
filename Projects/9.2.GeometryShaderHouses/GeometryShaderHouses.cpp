@@ -9,7 +9,7 @@
 #include "common\LoadTexture.h"
 #include "common\CheckError.h"
 
-#define PATH "..\\Projects\\9.1.GeometryShaderBasic"
+#define PATH "..\\Projects\\9.2.GeometryShaderHouses"
 
 using namespace OpenGLWindow;
 
@@ -29,13 +29,14 @@ float points[] = {
 
 void main()
 {
-    Window window(SCR_W, SCR_H, "Geometry Shader Demo");
+    Window window(SCR_W, SCR_H, "Geometry Shader Houses");
 
+	glEnable(GL_DEPTH_TEST);
     // Config for Shader
     string pathVS(PATH),pathFS(PATH),pathGS(PATH);
-    pathVS += "\\point.vs";
-    pathFS += "\\point.fs";
-    pathGS += "\\point.gs";
+    pathVS += "\\geometryShader.vs";
+    pathFS += "\\geometryShader.fs";
+    pathGS += "\\geometryShader.gs";
     Shader shader(pathVS.c_str(), pathFS.c_str(), pathGS.c_str());
 
     // Init VAO, VBO for Cube
@@ -57,7 +58,7 @@ void main()
         do_movement();
         // Render// draw Cube
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.Use();
         glBindVertexArray(VAO);

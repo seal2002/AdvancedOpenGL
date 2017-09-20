@@ -34,10 +34,16 @@ public:
 		Init(vertexPath, fragmentPath);
 	}
 
-    bool Init(const GLchar* vertexPath, const GLchar* fragmentPath)
+	Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const GLchar* geometryPath)
+	{
+		Init(vertexPath, fragmentPath, geometryPath);
+	}
+
+    bool Init(const GLchar* vertexPath, const GLchar* fragmentPath, const GLchar* geometryPath = NULL)
     {
         string vertexCode;
         string fragmentCode;
+		string geometryCode;
         ifstream vShaderFile;
         ifstream fShaderFile;
         vShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
@@ -65,10 +71,30 @@ public:
 			return false;
         }
 
+		if (geometryPath != NULL)
+		{
+			try
+			{
+				ifstream geometryFile;
+				geometryFile.exceptions(ifstream::failbit | ifstream::badbit);
+				geometryFile.open(geometryPath);
+
+				stringstream gShaderStream;
+				gShaderStream << geometryFile.rdbuf();
+				geometryFile.close();
+				geometryCode = gShaderStream.str();
+			}
+			catch (ifstream::failure e)
+			{
+				cout << "ERROR::SHADER::GEOMETRY_FILE_NOT_SUCCESFULLY_READ " << geometryPath << endl;
+				return false;
+			}
+		}
+
         const GLchar* vShaderCode = vertexCode.c_str();
         const GLchar* fShaderCode = fragmentCode.c_str();
 
-        GLuint vertex, fragment;
+        GLuint vertex, fragment, geometry;
         GLint success;
         GLchar infoLog[512];
 
@@ -97,10 +123,31 @@ public:
             cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << endl;
 			return false;
         }
+		//if  geometry path is given, compile geometry shader
+		if (geometryPath != NULL)
+		{
+			const char* gShaderCode = geometryCode.c_str();
+			geometry = glCreateShader(GL_GEOMETRY_SHADER);
+			glShaderSource(geometry, 1, &gShaderCode, NULL);
+			glCompileShader(geometry);
+			// Print compile errors if any
+			glGetShaderiv(geometry, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				glGetShaderInfoLog(vertex, 512, NULL, infoLog);
+				cout << "ERROR::SHADER::GEOMETRY::COMPILATION_FAILED\n" << infoLog << endl;
+				return false;
+			}
+		}
 
+		// shader Program
         this->Program = glCreateProgram();
         glAttachShader(this->Program, vertex);
         glAttachShader(this->Program, fragment);
+		if (geometryPath != NULL)
+		{
+			glAttachShader(this->Program, geometry);
+		}
         glLinkProgram(this->Program);
         // Print linking errors if any
         glGetProgramiv(this->Program, GL_LINK_STATUS, &success);
