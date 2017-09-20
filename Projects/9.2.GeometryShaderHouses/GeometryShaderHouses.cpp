@@ -21,17 +21,17 @@ Camera camera(glm::vec3(0.0f, 0.5f, 3.0f));
 bool* keys;
 
 float points[] = {
-    -0.5f, 0.5f, // top-left
-    0.5f, 0.5f, // top-right
-    0.5f, -0.5f, // bottom-right
-    -0.5f, -0.5f // bottom-left
+    -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // top-left
+     0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // top-right
+     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // bottom-right
+    -0.5f, -0.5f, 1.0f, 1.0f, 0.0f  // bottom-left
 };
 
 void main()
 {
     Window window(SCR_W, SCR_H, "Geometry Shader Houses");
 
-	glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     // Config for Shader
     string pathVS(PATH),pathFS(PATH),pathGS(PATH);
     pathVS += "\\geometryShader.vs";
@@ -48,7 +48,9 @@ void main()
     glBindVertexArray(VAO);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)(2 * sizeof(GL_FLOAT)));
 
     glBindVertexArray(0);
 
