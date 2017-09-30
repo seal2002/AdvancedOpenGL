@@ -52,6 +52,16 @@ function linkGLFW()
     filter {}
 end
 
+-- This function links statically against assimp
+function linkAssimp()
+    libdirs "Libraries/assimp/lib"
+
+    -- Our static lib should not link against assimp
+    filter "kind:not StaticLib"
+        links "assimp-vc140-mt"
+    filter {}
+end
+
 -- Our first project, the static library
 project "GLAD"
     -- kind is used to indicate the type of this project.
@@ -414,6 +424,32 @@ project "9.2.GeometryShaderHouses"
     includedirs "Libraries"
 
     useOpenGLWindowLib()
+    links "STB_IMAGE"
+    -- Now we need to add the OpenGL system libraries
+
+    filter { "system:windows" }
+        links { "OpenGL32" }
+
+    filter { "system:not windows" }
+        links { "GL" }
+
+-- The windowed app
+project "9.3.ExplodingObjects"
+    kind "ConsoleApp"
+
+    filter { "system:Windows" }
+    files "Libraries/common/*.h"
+
+    filter { "system:Windows" }
+    files "Projects/9.3.ExplodingObjects/**"
+
+    -- We also need the headers
+    includedirs "Projects/MainWindowLib"
+    includedirs "Libraries"
+    includedirs "Libraries/assimp"
+
+    useOpenGLWindowLib()
+    linkAssimp()
     links "STB_IMAGE"
     -- Now we need to add the OpenGL system libraries
 
