@@ -8,7 +8,7 @@
 #include "common\Shader.h"
 #include "common\LoadTexture.h"
 #include "common\CheckError.h"
-#define PATH "..\\Projects\\10.2.IntancesArrays"
+#define PATH "..\\Projects\\10.2.InstancesArrays"
 #define MAX_INSTANCES 100
 
 using namespace OpenGLWindow;
@@ -38,7 +38,6 @@ void main()
     // Config for shader
 
     string path(PATH);
-    instacesArrays.vs
     path += "\\instancesArrays";
     Shader shader(path.c_str());
 
