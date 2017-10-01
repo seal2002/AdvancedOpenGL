@@ -458,3 +458,29 @@ project "9.3.ExplodingObjects"
 
     filter { "system:not windows" }
         links { "GL" }
+
+-- The windowed app
+project "9.4.ExplodingObjects"
+    kind "ConsoleApp"
+
+    filter { "system:Windows" }
+    files "Libraries/common/*.h"
+
+    filter { "system:Windows" }
+    files "Projects/9.4.VisualizingNormalVector/**"
+
+    -- We also need the headers
+    includedirs "Projects/MainWindowLib"
+    includedirs "Libraries"
+    includedirs "Libraries/assimp"
+
+    useOpenGLWindowLib()
+    linkAssimp()
+    links "STB_IMAGE"
+    -- Now we need to add the OpenGL system libraries
+
+    filter { "system:windows" }
+        links { "OpenGL32" }
+
+    filter { "system:not windows" }
+        links { "GL" }
