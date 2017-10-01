@@ -9,7 +9,7 @@
 #include "common\LoadTexture.h"
 #include "common\CheckError.h"
 
-#define PATH "..\\Projects\\10.1.IntancesQuads"
+#define PATH "..\\Projects\\10.1.InstancesQuads"
 #define MAX_INSTANCES 100
 
 using namespace OpenGLWindow;
@@ -34,12 +34,12 @@ float quadVertices[] = {
 
 void main()
 {
-    Window window(SCR_W, SCR_H, "Intances Quads");
+    Window window(SCR_W, SCR_H, "Instances Quads");
 
     // Config for shader
 
     string path(PATH);
-    path += "\\IntancesQuads";
+    path += "\\InstancesQuads";
     Shader shader(path.c_str());
 
     unsigned int quadVAO, quadVBO;

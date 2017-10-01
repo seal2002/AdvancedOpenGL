@@ -486,14 +486,14 @@ project "9.4.ExplodingObjects"
         links { "GL" }
 
 -- The windowed app
-project "10.1.IntancesQuads"
+project "10.1.InstancesQuads"
     kind "ConsoleApp"
 
     filter { "system:Windows" }
     files "Libraries/common/*.h"
 
     filter { "system:Windows" }
-    files "Projects/10.1.IntancesQuads/**"
+    files "Projects/10.1.InstancesQuads/**"
 
     -- We also need the headers
     includedirs "Projects/MainWindowLib"
@@ -510,14 +510,14 @@ project "10.1.IntancesQuads"
         links { "GL" }
 
 -- The windowed app
-project "10.2.IntancesArrays"
+project "10.2.InstancesArrays"
     kind "ConsoleApp"
 
     filter { "system:Windows" }
     files "Libraries/common/*.h"
 
     filter { "system:Windows" }
-    files "Projects/10.2.IntancesArrays/**"
+    files "Projects/10.2.InstancesArrays/**"
 
     -- We also need the headers
     includedirs "Projects/MainWindowLib"
