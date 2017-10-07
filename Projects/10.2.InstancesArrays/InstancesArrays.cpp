@@ -1,4 +1,4 @@
-// Advance GLSL Demo from https://learnopengl.com/#!Advanced-OpenGL/Advanced-GLSL
+// Instancing Demo from https://learnopengl.com/#!Advanced-OpenGL/Instancing
 #include <MainWindow.hpp>
 #include <glm\glm.hpp>
 #include <glm\common.hpp>

@@ -532,3 +532,30 @@ project "10.2.InstancesArrays"
 
     filter { "system:not windows" }
         links { "GL" }
+
+-- The windowed app
+project "10.3.AsteroidField"
+    kind "ConsoleApp"
+
+    filter { "system:Windows" }
+    files "Libraries/common/*.h"
+
+    filter { "system:Windows" }
+    files "Projects/10.3.AsteroidField/**"
+
+    -- We also need the headers
+    includedirs "Projects/MainWindowLib"
+    includedirs "Libraries"
+    includedirs "Libraries/assimp"
+
+    useOpenGLWindowLib()
+    linkAssimp();
+    links "STB_IMAGE"
+
+    -- Now we need to add the OpenGL system libraries
+
+    filter { "system:windows" }
+        links { "OpenGL32" }
+
+    filter { "system:not windows" }
+        links { "GL" }
