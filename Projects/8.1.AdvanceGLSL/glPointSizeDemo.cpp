@@ -108,6 +108,8 @@ int main()
         window.pollEvents();
         window.swapBuffers();
     }
+    glDeleteVertexArrays(1, &cubeVAO);
+    glDeleteBuffers(1, &cubeVBO);
 }
 
 void do_movement()

@@ -66,6 +66,8 @@ void main()
         window.pollEvents();
         window.swapBuffers();
     }
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 }
 
 void do_movement()

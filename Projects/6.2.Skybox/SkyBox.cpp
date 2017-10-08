@@ -213,6 +213,10 @@ int main()
         window.pollEvents();
         window.swapBuffers();
     }
+    glDeleteVertexArrays(1, &cubeVAO);
+    glDeleteVertexArrays(1, &skyboxVAO);
+    glDeleteBuffers(1, &cubeVBO);
+    glDeleteBuffers(1, &skyboxVBO);
 }
 
 void do_movement()

@@ -230,6 +230,12 @@ int main()
         window.pollEvents();
         window.swapBuffers();
     }
+    glDeleteVertexArrays(1, &marbleVAO);
+    glDeleteVertexArrays(1, &grassVAO);
+    glDeleteVertexArrays(1, &groundVAO);
+    glDeleteBuffers(1, &marbleVBO);
+    glDeleteBuffers(1, &grassVBO);
+    glDeleteBuffers(1, &groundVBO);
 }
 
 void do_movement()

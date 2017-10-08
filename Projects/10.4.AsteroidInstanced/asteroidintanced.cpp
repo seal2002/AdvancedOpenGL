@@ -99,7 +99,6 @@ void main()
         glVertexAttribDivisor(6, 1);
         glBindVertexArray(0);
     }
-    glCheckError();
 
     while(!window.shouldClose())
     {
@@ -129,11 +128,11 @@ void main()
             glBindVertexArray(rock.meshes[i].VAO);
             glDrawElementsInstanced(GL_TRIANGLES, rock.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, MAX_INSTANCES);
         }
-        glCheckError();
+
         window.pollEvents();
         window.swapBuffers();
     }
-
+    glDeleteBuffers(1, &buffer);
 }
 
 void do_movement()
