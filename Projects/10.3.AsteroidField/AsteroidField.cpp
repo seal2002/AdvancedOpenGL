@@ -66,9 +66,7 @@ void main()
     }
 
     Model planet("..\\Resources\\planet\\planet.obj");
-    glCheckError();
     Model rock("..\\Resources\\rock\\rock.obj");
-    glCheckError();
 
     while(!window.shouldClose())
     {
@@ -84,19 +82,17 @@ void main()
 
         shader.setMat4("projection", projection);
         shader.setMat4("view", view);
-        glCheckError();
         glm::mat4 model;
         model = glm::translate(model, glm::vec3(0.0f, -3.0f, 0.0f));
         model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
         shader.setMat4("model", model);
         planet.Draw(shader);
-        glCheckError();
-       /* for(int i = 0; i < MAX_INSTANCES; i++)
+        for(int i = 0; i < MAX_INSTANCES; i++)
         {
             model = modelMatrices[i];
             shader.setMat4("model", model);
             rock.Draw(shader);
-        }*/
+        }
 
         window.pollEvents();
         window.swapBuffers();
