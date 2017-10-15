@@ -121,17 +121,16 @@ function useOpenGLWindowLib()
     useGLADLib()
 end
 
--- The windowed app
-project "1.DepthTest"
+-- Function Generate Project
+function GenerateProject(s)
+print(s)
+project (s)
     kind "ConsoleApp"
 
+    -- We also need the headers
     filter { "system:Windows" }
     files "Libraries/common/*.h"
 
-    filter { "system:Windows" }
-    files "Projects/1.DepthTest/**"
-
-    -- We also need the headers
     includedirs "Projects/MainWindowLib"
     includedirs "Libraries"
 
@@ -145,293 +144,27 @@ project "1.DepthTest"
     filter { "system:not windows" }
         links { "GL" }
 
--- The windowed app
-project "2.StencilTest"
-    kind "ConsoleApp"
+    -- filter { "system:windows" }
+    -- vpaths {
+    -- ["Headers"] = "Libraries/common/**.h",
+    -- ["Sources/*"] = "./Projects/" .. s .. "/**.cpp",
+    -- ["Shader"] = {"**.fs", "**.vs"}
+    -- }
 
     filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/2.StencilTest/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "3.1.BlendingDiscard"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/3.1.BlendingDiscard/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "3.2.BlendingSort"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/3.2.BlendingSort/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "4.FaceCulling"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/4.FaceCulling/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "5.1.FrameBuffers"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/5.1.FrameBuffers/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "6.1.CubeMaps"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/6.1.CubeMaps/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "6.2.SkyBox"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/6.2.SkyBox/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "6.3.EnviromentMapping"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/6.3.EnviromentMapping/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "8.1.AdvanceGLSL"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/8.1.AdvanceGLSL/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "8.2.UniformBufferExample"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/8.2.UniformBufferExample/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "9.1.GeometryShaderBasic"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/9.1.GeometryShaderBasic/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "9.2.GeometryShaderHouses"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/9.2.GeometryShaderHouses/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
+    files { './Projects/' .. s .. '/**', }
+end
+-- List of Project
+Projects = { "1.DepthTest", "2.StencilTest", "3.1.BlendingDiscard",
+             "3.2.BlendingSort", "4.FaceCulling", "5.1.FrameBuffers",
+             "6.1.CubeMaps", "6.2.SkyBox", "6.3.EnviromentMapping",
+             "8.1.AdvanceGLSL", "8.2.UniformBufferExample", "9.1.GeometryShaderBasic", "9.2.GeometryShaderHouses",
+             "10.1.InstancesQuads", "10.2.InstancesArrays"}
+
+for key, value in ipairs(Projects) do
+    print(key, value)
+    GenerateProject(value)
+end
 
 -- The windowed app
 project "9.3.ExplodingObjects"
@@ -476,54 +209,6 @@ project "9.4.ExplodingObjects"
 
     useOpenGLWindowLib()
     linkAssimp()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "10.1.InstancesQuads"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/10.1.InstancesQuads/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "10.2.InstancesArrays"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/10.2.InstancesArrays/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-
-    useOpenGLWindowLib()
     links "STB_IMAGE"
     -- Now we need to add the OpenGL system libraries
 
@@ -586,3 +271,8 @@ project "10.4.AsteroidInstanced"
 
     filter { "system:not windows" }
         links { "GL" }
+        
+if _ACTION == "clean" then
+   os.rmdir("./Generated")
+   os.rmdir("./Build")
+end
