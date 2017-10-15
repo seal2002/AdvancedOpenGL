@@ -19,7 +19,8 @@ static float SCR_H = 600.0f;
 void do_movement();
 void changeEffect();
 Camera camera(glm::vec3(0.0f, 0.5f, 3.0f));
-bool* keys;
+bool* keyPressed;
+bool* keyReleased;
 
 // setup vertex data (and buffer(s)) and configure vertex attributes
 // -----------------------------------------------------------------
@@ -194,9 +195,11 @@ int main()
 
     while (!window.shouldClose())
     {
-        keys = window.getKeyPress();
+        keyPressed = window.getKeyPress();
+        keyReleased = window.getKeyRelease();
         do_movement();
         changeEffect();
+        window.processInput();
 
         // render
         // -----
@@ -265,7 +268,7 @@ int main()
 
 void changeEffect()
 {
-    if (keys[GLFW_KEY_C])
+    if (keyReleased[GLFW_KEY_C])
     {
         effectIndex++;
         if(effectIndex > EffectList::Max - 1)
@@ -274,35 +277,35 @@ void changeEffect()
 }
 void do_movement()
 {
-    if (keys[GLFW_KEY_W])
+    if (keyPressed[GLFW_KEY_W])
     {
         camera.ProcessKeyboard(Camera_Movement::FORWARD);
     }
-    if (keys[GLFW_KEY_S])
+    if (keyPressed[GLFW_KEY_S])
     {
         camera.ProcessKeyboard(Camera_Movement::BACKWARD);
     }
-    if (keys[GLFW_KEY_A])
+    if (keyPressed[GLFW_KEY_A])
     {
         camera.ProcessKeyboard(Camera_Movement::LEFT);
     }
-    if (keys[GLFW_KEY_D])
+    if (keyPressed[GLFW_KEY_D])
     {
         camera.ProcessKeyboard(Camera_Movement::RIGHT);
     }
-    if (keys[GLFW_KEY_LEFT])
+    if (keyPressed[GLFW_KEY_LEFT])
     {
         camera.ProcessKeyboard(Camera_Movement::ROTATE_LEFT);
     }
-    if (keys[GLFW_KEY_RIGHT])
+    if (keyPressed[GLFW_KEY_RIGHT])
     {
         camera.ProcessKeyboard(Camera_Movement::ROTATE_RIGHT);
     }
-    if (keys[GLFW_KEY_UP])
+    if (keyPressed[GLFW_KEY_UP])
     {
         camera.ProcessKeyboard(Camera_Movement::ROTATE_UP);
     }
-    if (keys[GLFW_KEY_DOWN])
+    if (keyPressed[GLFW_KEY_DOWN])
     {
         camera.ProcessKeyboard(Camera_Movement::ROTATE_DOWN);
     }
