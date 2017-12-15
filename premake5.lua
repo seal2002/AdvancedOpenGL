@@ -144,12 +144,12 @@ project (s)
     filter { "system:not windows" }
         links { "GL" }
 
-    -- filter { "system:windows" }
-    -- vpaths {
-    -- ["Headers"] = "Libraries/common/**.h",
-    -- ["Sources/*"] = "./Projects/" .. s .. "/**.cpp",
-    -- ["Shader"] = {"**.fs", "**.vs"}
-    -- }
+    filter { "system:windows" }
+    vpaths {
+    ["Libraries"] = "Libraries/common/**.h",
+    ["Sources/*"] = "./Projects/" .. s .. "/**.cpp",
+    ["Shader"] = {"**.fs", "**.vs"}
+    }
 
     filter { "system:Windows" }
     files { './Projects/' .. s .. '/**', }
@@ -181,11 +181,11 @@ project (s)
         links { "GL" }
 
     -- filter { "system:windows" }
-    -- vpaths {
-    -- ["Headers"] = "Libraries/common/**.h",
-    -- ["Sources/*"] = "./Projects/" .. s .. "/**.cpp",
-    -- ["Shader"] = {"**.fs", "**.vs"}
-    -- }
+    vpaths {
+    ["Libraries"] = "Libraries/common/**.h",
+    ["Sources/*"] = "./Projects/" .. s .. "/**.cpp",
+    ["Shader"] = {"**.fs", "**.vs"}
+    }
 
     filter { "system:Windows" }
     files { './Projects/' .. s .. '/**', }
