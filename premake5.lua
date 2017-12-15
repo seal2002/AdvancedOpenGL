@@ -135,7 +135,7 @@ project (s)
     includedirs "Libraries"
 
     useOpenGLWindowLib()
-    links "STB_IMAGE"
+    links { "STB_IMAGE" }
     -- Now we need to add the OpenGL system libraries
 
     filter { "system:windows" }
@@ -154,6 +154,43 @@ project (s)
     filter { "system:Windows" }
     files { './Projects/' .. s .. '/**', }
 end
+
+-- Function Generate Project with Assimp
+function GenerateProjectwithAssimp(s)
+print(s)
+project (s)
+    kind "ConsoleApp"
+
+    -- We also need the headers
+    filter { "system:Windows" }
+    files "Libraries/common/*.h"
+
+    includedirs "Projects/MainWindowLib"
+    includedirs "Libraries"
+    includedirs "Libraries/assimp"
+
+    useOpenGLWindowLib()
+    linkAssimp()
+    links { "STB_IMAGE" }
+    -- Now we need to add the OpenGL system libraries
+
+    filter { "system:windows" }
+        links { "OpenGL32" }
+
+    filter { "system:not windows" }
+        links { "GL" }
+
+    -- filter { "system:windows" }
+    -- vpaths {
+    -- ["Headers"] = "Libraries/common/**.h",
+    -- ["Sources/*"] = "./Projects/" .. s .. "/**.cpp",
+    -- ["Shader"] = {"**.fs", "**.vs"}
+    -- }
+
+    filter { "system:Windows" }
+    files { './Projects/' .. s .. '/**', }
+end
+
 -- List of Project
 Projects = { "1.DepthTest", "2.StencilTest", "3.1.BlendingDiscard",
              "3.2.BlendingSort", "4.FaceCulling", "5.1.FrameBuffers",
@@ -166,111 +203,12 @@ for key, value in ipairs(Projects) do
     GenerateProject(value)
 end
 
--- The windowed app
-project "9.3.ExplodingObjects"
-    kind "ConsoleApp"
+ProjectsAssimp = { "9.3.ExplodingObjects", "9.4.ExplodingObjects", "10.3.AsteroidField", "10.4.AsteroidInstanced"}
 
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/9.3.ExplodingObjects/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-    includedirs "Libraries/assimp"
-
-    useOpenGLWindowLib()
-    linkAssimp()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "9.4.ExplodingObjects"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/9.4.VisualizingNormalVector/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-    includedirs "Libraries/assimp"
-
-    useOpenGLWindowLib()
-    linkAssimp()
-    links "STB_IMAGE"
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "10.3.AsteroidField"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/10.3.AsteroidField/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-    includedirs "Libraries/assimp"
-
-    useOpenGLWindowLib()
-    linkAssimp();
-    links "STB_IMAGE"
-
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
-
--- The windowed app
-project "10.4.AsteroidInstanced"
-    kind "ConsoleApp"
-
-    filter { "system:Windows" }
-    files "Libraries/common/*.h"
-
-    filter { "system:Windows" }
-    files "Projects/10.4.AsteroidInstanced/**"
-
-    -- We also need the headers
-    includedirs "Projects/MainWindowLib"
-    includedirs "Libraries"
-    includedirs "Libraries/assimp"
-
-    useOpenGLWindowLib()
-    linkAssimp();
-    links "STB_IMAGE"
-
-    -- Now we need to add the OpenGL system libraries
-
-    filter { "system:windows" }
-        links { "OpenGL32" }
-
-    filter { "system:not windows" }
-        links { "GL" }
+for key, value in ipairs(ProjectsAssimp) do
+    print(key, value)
+    GenerateProjectwithAssimp(value)
+end
         
 if _ACTION == "clean" then
    os.rmdir("./Generated")
