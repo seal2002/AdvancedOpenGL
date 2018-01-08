@@ -62,6 +62,21 @@ function linkAssimp()
     filter {}
 end
 
+-- This function includes Freetype's header files
+function includeFreetype()
+    includedirs "Libraries/freetype/include"
+end
+
+-- This function links statically against Freetype
+function linkFreetype()
+    libdirs "Libraries/freetype/lib"
+
+    -- Our static lib should not link against Freetype
+    filter "kind:not StaticLib"
+        links "freetype281d"
+    filter {}
+end
+
 -- Our first project, the static library
 project "GLAD"
     -- kind is used to indicate the type of this project.
@@ -133,8 +148,10 @@ project (s)
 
     includedirs "Projects/MainWindowLib"
     includedirs "Libraries"
+    includeFreetype()
 
     useOpenGLWindowLib()
+    linkFreetype()
     links { "STB_IMAGE" }
     -- Now we need to add the OpenGL system libraries
 
@@ -196,7 +213,7 @@ Projects = { "1.DepthTest", "2.StencilTest", "3.1.BlendingDiscard",
              "3.2.BlendingSort", "4.FaceCulling", "5.1.FrameBuffers",
              "6.1.CubeMaps", "6.2.SkyBox", "6.3.EnviromentMapping",
              "8.1.AdvanceGLSL", "8.2.UniformBufferExample", "9.1.GeometryShaderBasic", "9.2.GeometryShaderHouses",
-             "10.1.InstancesQuads", "10.2.InstancesArrays"}
+             "10.1.InstancesQuads", "10.2.InstancesArrays", "TextRendering"}
 
 for key, value in ipairs(Projects) do
     print(key, value)
