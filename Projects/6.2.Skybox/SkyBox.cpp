@@ -8,6 +8,7 @@
 #include "common\Shader.h"
 #include "common\LoadTexture.h"
 #include "common\CheckError.h"
+#include "common\TextRendering.h"
 
 #define PATH "..\\Projects\\6.2.Skybox"
 
@@ -15,6 +16,9 @@ using namespace OpenGLWindow;
 
 const static int SCR_W = 800;
 const static int SCR_H = 600;
+// timing
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
 
 void do_movement();
 Camera camera(glm::vec3(0.0f, 0.5f, 3.0f));
@@ -125,6 +129,7 @@ int main()
     sprintf(path, "%s\\%s", PATH, "skybox");
     Shader skybox(path);
 
+    Shader textShader("..\\Projects\\6.2.Skybox\\text.vs", "..\\Projects\\6.2.Skybox\\text.fs");
     // Init VAO, VBO for Cube
     unsigned int cubeVAO, cubeVBO;
     glGenBuffers(1, &cubeVBO);
@@ -149,8 +154,10 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)0);
     glBindVertexArray(0);
     glCheckError();
-    // Load Texture
 
+    // Init Text
+    TextRendering textRendering(SCR_W, SCR_H);
+    // Load Texture
     unsigned int textureMarble = loadTexture("..\\Resources\\marble.jpg");
 
     vector<string> faces = {
@@ -171,9 +178,17 @@ int main()
 
     skybox.Use();
     skybox.setInt("skybox", 0);
-
+    // Init textFPS
+    char textFPS[50];
     while(!window.shouldClose())
     {
+        // per-frame time logic
+        // --------------------
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        float FPS = 1.0f / deltaTime;
+
         keys = window.getKeyPress();
         do_movement();
         // Render
@@ -209,6 +224,15 @@ int main()
         glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glDepthFunc(GL_LESS);
+
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        sprintf(textFPS, "FPS = %f", FPS);
+        textRendering.RenderText(textShader, textFPS, 25.0f, SCR_H - 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_BLEND);
 
         window.pollEvents();
         window.swapBuffers();
