@@ -24,7 +24,7 @@ class TextRendering
         unsigned int    Advance;    // Offset to advance to next glyph
     };
 
-    std::map<char, Character> Characters;
+    map<char, Character> Characters;
     GLuint VAO, VBO;
     int SCR_W, SCR_H;
 

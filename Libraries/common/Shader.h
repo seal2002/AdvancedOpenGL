@@ -1,6 +1,3 @@
-#ifndef _SHADER_H__
-#define _SHADER_H__
-
 #pragma once
 
 #include <string>
@@ -210,5 +207,3 @@ public:
         glUniformMatrix4fv(variableLoc, 1, GL_FALSE, &value[0][0]);
     }
 };
-
-#endif // !SHADER_H

@@ -1,6 +1,8 @@
 #ifndef __LOAD_TEXTURE_H__
 #define __LOAD_TEXTURE_H__
 
+#include <vector>
+
 #include <stb_image.h>
 #include "CheckError.h"
 
