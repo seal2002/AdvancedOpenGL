@@ -60,6 +60,42 @@ namespace OpenGLWindow
         memset(keyReleased, 0, GLFW_KEY_LAST);
     }
 
+    void Window::doMovement(Camera *camera)
+    {
+        if (keyPressed[GLFW_KEY_W])
+        {
+            camera->ProcessKeyboard(Camera_Movement::FORWARD);
+        }
+        if (keyPressed[GLFW_KEY_S])
+        {
+            camera->ProcessKeyboard(Camera_Movement::BACKWARD);
+        }
+        if (keyPressed[GLFW_KEY_A])
+        {
+            camera->ProcessKeyboard(Camera_Movement::LEFT);
+        }
+        if (keyPressed[GLFW_KEY_D])
+        {
+            camera->ProcessKeyboard(Camera_Movement::RIGHT);
+        }
+        if (keyPressed[GLFW_KEY_LEFT])
+        {
+            camera->ProcessKeyboard(Camera_Movement::ROTATE_LEFT);
+        }
+        if (keyPressed[GLFW_KEY_RIGHT])
+        {
+            camera->ProcessKeyboard(Camera_Movement::ROTATE_RIGHT);
+        }
+        if (keyPressed[GLFW_KEY_UP])
+        {
+            camera->ProcessKeyboard(Camera_Movement::ROTATE_UP);
+        }
+        if (keyPressed[GLFW_KEY_DOWN])
+        {
+            camera->ProcessKeyboard(Camera_Movement::ROTATE_DOWN);
+        }
+    }
+
     std::pair<int, int> Window::getWindowSize() const noexcept
     {
         std::pair<int, int> sz{};

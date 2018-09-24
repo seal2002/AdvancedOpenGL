@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include <glad/glad.h>
+#include "common/Camera.h"
 
 // Forward declare GLFWwindow to avoid including glfw3.h
 struct GLFWwindow;
@@ -31,6 +32,8 @@ namespace OpenGLWindow
         bool * getKeyPress() const noexcept;
 
         bool * getKeyRelease() const noexcept;
+
+        void doMovement(Camera *camera);
 
     private:
         GLFWwindow* wnd;
