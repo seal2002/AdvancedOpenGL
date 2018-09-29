@@ -222,7 +222,7 @@ for key, value in ipairs(Projects) do
     GenerateProject(value)
 end
 
-ProjectsAssimp = { "9.3.ExplodingObjects", "9.4.ExplodingObjects", "10.3.AsteroidField", "10.4.AsteroidInstanced"}
+ProjectsAssimp = { "9.3.ExplodingObjects", "9.4.VisualizingNormalVector", "10.3.AsteroidField", "10.4.AsteroidInstanced"}
 
 for key, value in ipairs(ProjectsAssimp) do
     print(key, value)
