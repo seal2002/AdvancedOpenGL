@@ -61,7 +61,7 @@ function linkAssimp()
     -- Our static lib should not link against assimp
     filter "kind:not StaticLib"
         links "assimp-vc140-mt"
-    filter {}
+    filter {}    
 end
 
 -- This function includes Freetype's header files
@@ -199,6 +199,11 @@ project (s)
     filter { "system:not windows" }
         links { "GL" }
 
+    filter { "system:windows" }
+        -- copy a file from the objects directory to the target directory
+        postbuildcommands {
+            "{COPY} %{wks.location}..\\dlls\\assimp-vc140-mt.dll %{cfg.targetdir}"
+        }
     -- filter { "system:windows" }
     -- vpaths {
     -- ["Headers"] = "Libraries/common/**.h",
