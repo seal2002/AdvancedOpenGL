@@ -16,7 +16,7 @@ namespace OpenGLWindow
     class Window
     {
     public:
-        Window(int width, int  height, const std::string& title);
+        Window(int width, int  height, const std::string& title, bool antiAlias = false);
         ~Window();
 
         bool shouldClose() const noexcept;

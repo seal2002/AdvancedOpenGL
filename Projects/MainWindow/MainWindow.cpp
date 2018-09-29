@@ -8,12 +8,16 @@ namespace OpenGLWindow
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
     bool keyPressed[GLFW_KEY_LAST];
     bool keyReleased[GLFW_KEY_LAST];
-    Window::Window(int width, int height, const std::string& title)
+    Window::Window(int width, int height, const std::string& title, bool antiAlias)
     {
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        if(antiAlias) {
+            glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+            glfwWindowHint(GLFW_SAMPLES, 4);
+        }
         wnd = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(wnd);
 

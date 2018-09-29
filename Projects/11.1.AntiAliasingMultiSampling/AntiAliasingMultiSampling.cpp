@@ -19,9 +19,11 @@ Object *Cube;
 
 int main()
 {
-    Window window(SCR_W, SCR_H, "Anti Aliasing Multi Sampling");
+    Window window(SCR_W, SCR_H, "Anti Aliasing Multi Sampling", true); // Turn on init with Anit Aliasing for this demo
 
     glEnable(GL_DEPTH_TEST);
+    // Nvidia 1050Ti already enable it, just do it for common code
+    glEnable(GL_MULTISAMPLE);
 
     Cube = new Object();
     Cube->Load("..\\Resources\\Cube.txt");
