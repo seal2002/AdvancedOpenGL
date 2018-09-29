@@ -77,7 +77,7 @@ public:
             pitch -= 1.0f;
         if (direction == Camera_Movement::ZOOM_IN)
             zoom -= 0.01f;
-        if (direction == Camera_Movement::ZOOM_OUT)        
+        if (direction == Camera_Movement::ZOOM_OUT)
             zoom += 0.01f;
         updateCameraVectors();
     }
