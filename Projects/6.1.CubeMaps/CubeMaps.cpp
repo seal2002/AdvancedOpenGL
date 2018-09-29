@@ -17,7 +17,6 @@ static float SCR_W = 800.0f;
 static float SCR_H = 600.0f;
 
 void do_movement();
-void changeEffect();
 Camera camera(glm::vec3(0.0f, 0.5f, 3.0f));
 bool* keys;
 
@@ -25,8 +24,8 @@ bool* keys;
 // -----------------------------------------------------------------
 
 float cubeVertices[] = {
-        // positions          // texture Coords
-        // Back face
+    // positions
+    // Back face
     -0.5f, -0.5f, -0.5f,  // Bottom-left
      0.5f,  0.5f, -0.5f,  // top-right
      0.5f, -0.5f, -0.5f,  // bottom-right
