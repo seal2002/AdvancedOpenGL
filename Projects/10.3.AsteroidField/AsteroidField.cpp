@@ -8,6 +8,7 @@
 #include "common\Shader.h"
 #include "common\LoadTexture.h"
 #include "common\CheckError.h"
+#include "common\TextRendering.h"
 
 #include "Model.h"
 
@@ -20,19 +21,23 @@ using namespace OpenGLWindow;
 const static int SCR_W = 1280;
 const static int SCR_H = 720;
 
+// timing
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
 void do_movement();
 Camera camera(glm::vec3(0.0f, 0.0f, 55.0f));
 bool* keys;
 
 void main()
 {
-    Window window(SCR_W, SCR_H, "Asteroid Field");
+    Window window(SCR_W, SCR_H, "Asteroid Field", false);
 
     glEnable(GL_DEPTH_TEST);
     // Config for shader
     string path(PATH);
-    path += "\\AsteroidField";
-    Shader shader(path.c_str());
+    Shader shader(string(path + "\\AsteroidField").c_str());
+    Shader text(string(path + "\\text").c_str());
 
     // VBO for the instance Arrays
     glm::mat4 *modelMatrices;
@@ -68,8 +73,15 @@ void main()
     Model planet("..\\Resources\\planet\\planet.obj");
     Model rock("..\\Resources\\rock\\rock.obj");
 
+    // Init Text
+    TextRendering textRendering(SCR_W, SCR_H);
+
     while(!window.shouldClose())
     {
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        float FPS = 1.0f / deltaTime;
         keys = window.getKeyPress();
         do_movement();
         // Render// draw Cube
@@ -94,6 +106,17 @@ void main()
             rock.Draw(shader);
         }
 
+        // Render FPS 
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        string textFPS("FPS = ");
+        textFPS += to_string(FPS);
+        textRendering.RenderText(text, textFPS, 25.0f, SCR_H - 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_BLEND);
+        textFPS.clear();
         window.pollEvents();
         window.swapBuffers();
     }
