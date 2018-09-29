@@ -5,10 +5,12 @@ workspace "AdvanceOpenGL"
 
     -- We indicate that all the projects are C++ only
     language "C++"
-
+    
     -- We will compile for x86_32. You can change this to x86 for 32 bit builds.
     architecture "x86"
-
+        -- Use system lastest version for target to latest SDK for build Win32 version
+    filter "system:Windows"
+        systemversion "10.0.17134.0"
     -- Configurations are often used to store some compiler / linker settings together.
     -- The Debug configuration will be used by us while debugging.
     -- The optimized Release configuration will be used when shipping the app.
@@ -213,7 +215,7 @@ Projects = { "1.DepthTest", "2.StencilTest", "3.1.BlendingDiscard",
              "3.2.BlendingSort", "4.FaceCulling", "5.1.FrameBuffers",
              "6.1.CubeMaps", "6.2.SkyBox", "6.3.EnviromentMapping",
              "8.1.AdvanceGLSL", "8.2.UniformBufferExample", "9.1.GeometryShaderBasic", "9.2.GeometryShaderHouses",
-             "10.1.InstancesQuads", "10.2.InstancesArrays", "TextRendering"}
+             "10.1.InstancesQuads", "10.2.InstancesArrays", "11.1.AntiAliasingMultiSampling", "TextRendering"}
 
 for key, value in ipairs(Projects) do
     print(key, value)
