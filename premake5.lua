@@ -186,9 +186,11 @@ project (s)
 
     includedirs "Projects/MainWindowLib"
     includedirs "Libraries"
+    includeFreetype()
     includedirs "Libraries/assimp"
 
     useOpenGLWindowLib()
+    linkFreetype()
     linkAssimp()
     links { "STB_IMAGE" }
     -- Now we need to add the OpenGL system libraries
