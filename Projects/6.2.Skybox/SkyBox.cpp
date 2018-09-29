@@ -122,14 +122,14 @@ int main()
     Window window(SCR_W, SCR_H, "SkyBox Demo");
 
     glEnable(GL_DEPTH_TEST);
+	
     // Load Shader
-    char *path = new char[50];
-    sprintf(path, "%s\\%s", PATH, "cube");
-    Shader cube(path);
-    sprintf(path, "%s\\%s", PATH, "skybox");
-    Shader skybox(path);
+	string path(PATH);
 
-    Shader textShader("..\\Projects\\6.2.Skybox\\text.vs", "..\\Projects\\6.2.Skybox\\text.fs");
+    Shader cube(string(path + "\\cube").c_str());    
+    Shader skybox(string(path + "\\skybox").c_str());
+    Shader textShader(string(path + "\\text").c_str());
+
     // Init VAO, VBO for Cube
     unsigned int cubeVAO, cubeVBO;
     glGenBuffers(1, &cubeVBO);
@@ -189,8 +189,7 @@ int main()
         lastFrame = currentFrame;
         float FPS = 1.0f / deltaTime;
 
-        keys = window.getKeyPress();
-        do_movement();
+        window.doMovement(&camera);
         // Render
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -237,44 +236,10 @@ int main()
         window.pollEvents();
         window.swapBuffers();
     }
-    glDeleteVertexArrays(1, &cubeVAO);
+
+	glDeleteVertexArrays(1, &cubeVAO);
     glDeleteVertexArrays(1, &skyboxVAO);
     glDeleteBuffers(1, &cubeVBO);
     glDeleteBuffers(1, &skyboxVBO);
-}
 
-void do_movement()
-{
-    if (keys[GLFW_KEY_W])
-    {
-        camera.ProcessKeyboard(Camera_Movement::FORWARD);
-    }
-    if (keys[GLFW_KEY_S])
-    {
-        camera.ProcessKeyboard(Camera_Movement::BACKWARD);
-    }
-    if (keys[GLFW_KEY_A])
-    {
-        camera.ProcessKeyboard(Camera_Movement::LEFT);
-    }
-    if (keys[GLFW_KEY_D])
-    {
-        camera.ProcessKeyboard(Camera_Movement::RIGHT);
-    }
-    if (keys[GLFW_KEY_LEFT])
-    {
-        camera.ProcessKeyboard(Camera_Movement::ROTATE_LEFT);
-    }
-    if (keys[GLFW_KEY_RIGHT])
-    {
-        camera.ProcessKeyboard(Camera_Movement::ROTATE_RIGHT);
-    }
-    if (keys[GLFW_KEY_UP])
-    {
-        camera.ProcessKeyboard(Camera_Movement::ROTATE_UP);
-    }
-    if (keys[GLFW_KEY_DOWN])
-    {
-        camera.ProcessKeyboard(Camera_Movement::ROTATE_DOWN);
-    }
 }

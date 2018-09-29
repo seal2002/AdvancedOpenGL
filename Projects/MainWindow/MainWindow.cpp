@@ -94,6 +94,15 @@ namespace OpenGLWindow
         {
             camera->ProcessKeyboard(Camera_Movement::ROTATE_DOWN);
         }
+        if (keyPressed[GLFW_KEY_R])
+        {
+            camera->ProcessKeyboard(Camera_Movement::ZOOM_IN);
+        }
+        if (keyPressed[GLFW_KEY_F])
+        {
+            camera->ProcessKeyboard(Camera_Movement::ZOOM_OUT);
+        }
+        memset(keyReleased, 0, GLFW_KEY_LAST);
     }
 
     std::pair<int, int> Window::getWindowSize() const noexcept
