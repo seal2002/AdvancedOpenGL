@@ -31,7 +31,7 @@ public:
 
     Object():numlines(0), numOfVerticlePerLine(0) {}
 
-    void Load(const char *fileName)
+    void Load(const char *fileName, bool Screen = false)
     {
         ifstream fstream(fileName);
         string line;
@@ -66,12 +66,23 @@ public:
         glBufferData(GL_ARRAY_BUFFER, (arr.size() * sizeof(float)), arr.data(), GL_STATIC_DRAW);
         // link vertex attributes
         glBindVertexArray(VAO);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, PositionsVertexAtribute, GL_FLOAT, GL_FALSE, numOfVerticlePerLine * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, ColorsVertexAtribute, GL_FLOAT, GL_FALSE, numOfVerticlePerLine * sizeof(float), (void*)(PositionsVertexAtribute * sizeof(float)));
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, TexCoordVertexAtribute, GL_FLOAT, GL_FALSE, numOfVerticlePerLine * sizeof(float), (void*)((PositionsVertexAtribute + ColorsVertexAtribute) * sizeof(float)));
+
+        if(Screen)
+        {
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, numOfVerticlePerLine * sizeof(float), (void*)0); // cheat with hardcord 2
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, numOfVerticlePerLine * sizeof(float), (void*)(2 * sizeof(float)));
+        }
+        else
+        {
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, PositionsVertexAtribute, GL_FLOAT, GL_FALSE, numOfVerticlePerLine * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, ColorsVertexAtribute, GL_FLOAT, GL_FALSE, numOfVerticlePerLine * sizeof(float), (void*)(PositionsVertexAtribute * sizeof(float)));
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(2, TexCoordVertexAtribute, GL_FLOAT, GL_FALSE, numOfVerticlePerLine * sizeof(float), (void*)((PositionsVertexAtribute + ColorsVertexAtribute) * sizeof(float)));
+        }
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     }
