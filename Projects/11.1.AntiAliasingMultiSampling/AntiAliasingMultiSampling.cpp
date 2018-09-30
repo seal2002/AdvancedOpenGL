@@ -17,7 +17,7 @@ Camera camera(glm::vec3(0.0f, 0.5f, 3.0f));
 
 Object *Cube;
 
-int main()
+void main()
 {
     Window window(SCR_W, SCR_H, "Anti Aliasing Multi Sampling", true); // Turn on init with Anit Aliasing for this demo
 
