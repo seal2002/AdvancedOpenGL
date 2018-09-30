@@ -1,4 +1,4 @@
-#Learning OpenGL with premake5 
+# Learning OpenGL with premake5 
 
 ## Chapter Advance OpenGL
 
