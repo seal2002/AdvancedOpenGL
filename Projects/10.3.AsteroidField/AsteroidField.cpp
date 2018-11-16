@@ -1,4 +1,6 @@
 // Instancing Demo from https://learnopengl.com/#!Advanced-OpenGL/Instancing
+#include <queue>
+#include <stack>
 #include <MainWindow.hpp>
 #include <glm\glm.hpp>
 #include <glm\common.hpp>
@@ -75,6 +77,8 @@ void main()
 
     // Init Text
     TextRendering textRendering(SCR_W, SCR_H);
+	float _time[5];
+	std::stack<float> time;
 
     while(!window.shouldClose())
     {
@@ -99,12 +103,15 @@ void main()
         model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
         shader.setMat4("model", model);
         planet.Draw(shader);
+		_time[0] = glfwGetTime();
         for(int i = 0; i < MAX_INSTANCES; i++)
         {
             model = modelMatrices[i];
             shader.setMat4("model", model);
             rock.Draw(shader);
         }
+		_time[1] = glfwGetTime();
+		time.push(float(_time[1] - _time[0]));
 
         // Render FPS 
         glEnable(GL_CULL_FACE);
@@ -114,11 +121,28 @@ void main()
         string textFPS("FPS = ");
         textFPS += to_string(FPS);
         textRendering.RenderText(text, textFPS, 25.0f, SCR_H - 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+		textFPS.clear();
+		textFPS = string("Render MAX_INSTANCES = ");
+		textFPS += to_string(time.top());
+		time.pop();
+		textRendering.RenderText(text, textFPS, 25.0f, SCR_H - 50.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+		textFPS.clear();
+		textFPS = string("Render TEXT = ");
+		textFPS += to_string(time.empty() ? 0 : time.top());
+		textRendering.RenderText(text, textFPS, 25.0f, SCR_H - 75.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+		textFPS.clear();
+		textFPS = string("Swap Buffer = ");
+		textFPS += to_string(time.empty() ? 0 : time.top());
+		textRendering.RenderText(text, textFPS, 25.0f, SCR_H - 100.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
         glDisable(GL_CULL_FACE);
         glDisable(GL_BLEND);
         textFPS.clear();
         window.pollEvents();
+		_time[2] = glfwGetTime();
+		time.push(float(_time[2] - _time[1]));
         window.swapBuffers();
+		_time[3] = glfwGetTime();
+		time.push(float(_time[3] - _time[2]));
     }
 
 }
