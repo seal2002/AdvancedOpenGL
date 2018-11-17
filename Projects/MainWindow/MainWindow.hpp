@@ -35,7 +35,6 @@ namespace OpenGLWindow
 
         void doMovement(Camera *camera);
 
-    private:
         GLFWwindow* wnd;
     };
 }

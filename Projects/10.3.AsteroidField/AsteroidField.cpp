@@ -1,6 +1,6 @@
 // Instancing Demo from https://learnopengl.com/#!Advanced-OpenGL/Instancing
-#include <queue>
 #include <stack>
+#include <thread>
 #include <MainWindow.hpp>
 #include <glm\glm.hpp>
 #include <glm\common.hpp>
@@ -30,6 +30,8 @@ float lastFrame = 0.0f;
 void do_movement();
 Camera camera(glm::vec3(0.0f, 0.0f, 55.0f));
 bool* keys;
+
+void workerThread(Window &window, Model &model, Shader &shader, glm::mat4 *mat, int begin, int end);
 
 void main()
 {
@@ -79,6 +81,10 @@ void main()
     TextRendering textRendering(SCR_W, SCR_H);
 	float _time[5];
 	std::stack<float> time;
+	int num_threads = 2;
+	std::vector<std::thread *> threads;
+
+	float MaxFPS = MININT;
 
     while(!window.shouldClose())
     {
@@ -86,6 +92,8 @@ void main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         float FPS = 1.0f / deltaTime;
+		MaxFPS = (FPS > MaxFPS) ? FPS : MaxFPS;
+		cout << "FPS : " << FPS << "MAX FPS : " << MaxFPS << endl;
         keys = window.getKeyPress();
         do_movement();
         // Render// draw Cube
@@ -104,12 +112,25 @@ void main()
         shader.setMat4("model", model);
         planet.Draw(shader);
 		_time[0] = glfwGetTime();
-        for(int i = 0; i < MAX_INSTANCES; i++)
-        {
-            model = modelMatrices[i];
-            shader.setMat4("model", model);
-            rock.Draw(shader);
-        }
+        //for(int i = 0; i < MAX_INSTANCES; i++)
+        //{
+        //    model = modelMatrices[i];
+        //    shader.setMat4("model", model);
+        //    rock.Draw(shader);
+        //}
+
+		for (int i = 0; i < num_threads; i++)
+		{
+			threads.push_back(new std::thread(workerThread, std::ref(window), rock, shader, modelMatrices, 0, 1000));
+			//threads.push_back(new std::thread(workerThread, std::ref(window), rock, shader, modelMatrices, 0, 500));
+			//threads.push_back(new std::thread(workerThread, std::ref(window), rock, shader, modelMatrices, 500, 1000));
+		}
+
+		for (int i = 0; i < num_threads; i++)
+		{
+			threads[i]->joinable() ? threads[i]->join() : void(0);
+		}
+		threads.pop_back();
 		_time[1] = glfwGetTime();
 		time.push(float(_time[1] - _time[0]));
 
@@ -120,6 +141,8 @@ void main()
 
         string textFPS("FPS = ");
         textFPS += to_string(FPS);
+		textFPS += " MaxFPS = ";
+		textFPS += to_string(MaxFPS);
         textRendering.RenderText(text, textFPS, 25.0f, SCR_H - 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
 		textFPS.clear();
 		textFPS = string("Render MAX_INSTANCES = ");
@@ -181,4 +204,14 @@ void do_movement()
     {
         camera.ProcessKeyboard(Camera_Movement::ROTATE_DOWN);
     }
+}
+
+void workerThread(Window &window, Model &model, Shader &shader, glm::mat4 *mat, int begin, int end)
+{
+	//glfwMakeContextCurrent(window.wnd);
+	for (int i = begin; i < end; i++)
+	{
+		shader.setMat4("model", mat[i]);
+		model.Draw(shader);
+	}
 }
